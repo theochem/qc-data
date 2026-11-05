@@ -1,0 +1,7 @@
+[datasets.spherical]
+provider = "zenodo"
+record_id = "example_record_id"
+
+[datasets.atomic]
+provider = "federated"
+record_id = "1234567"
