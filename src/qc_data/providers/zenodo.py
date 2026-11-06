@@ -5,6 +5,7 @@ from pathlib import Path
 import pooch
 
 from .base import BaseProvider
+from .kernels import list_pooch_registry
 
 
 class ZenodoProvider(BaseProvider):
@@ -29,21 +30,11 @@ class ZenodoProvider(BaseProvider):
         """
 
         downloader = self._create_pooch(dataset, Path(".cache"))
+        return list_pooch_registry(downloader, path, recursive=recursive)
 
-        # Select files under the requested path.
-        files = downloader.registry_files
-        if path in files:
-            return [path]
-
-        prefix = f"{path.strip('/')}/" if path else ""
-        files = [name for name in files if name.startswith(prefix)]
-
-        if not recursive:
-            files = [prefix + name[len(prefix) :].split("/")[0] for name in files]
-
-        return sorted(set(files))
-
-    def fetch(self, dataset: dict, cache_dir: Path, path: str = "", recursive: bool = True) -> Path:
+    def fetch(
+        self, dataset: dict, cache_dir: Path, path: str = "", recursive: bool = True
+    ) -> list[Path]:
         """Fetch a file or directory from a Zenodo dataset
 
         Parameters
@@ -59,11 +50,12 @@ class ZenodoProvider(BaseProvider):
 
         Returns
         -------
-        Path
-            The path to the fetched file or directory.
+        list[Path]
+            Local paths to the fetched files.
         """
-        # Implementation for fetching files from a Zenodo dataset
-        pass
+        downloader = self._create_pooch(dataset, cache_dir)
+        files = list_pooch_registry(downloader, path, recursive=recursive)
+        return [Path(downloader.fetch(name)) for name in files]
 
     def _create_pooch(self, dataset: dict, cache_dir: Path) -> pooch.Pooch:
         """Initialize Pooch for a Zenodo dataset.
