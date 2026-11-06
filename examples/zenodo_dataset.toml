@@ -1,0 +1,6 @@
+[cache]
+namespace = "qc-data-examples"
+
+[datasets.footstep_obesity]
+provider = "zenodo"
+doi = "10.5281/zenodo.23916360"
