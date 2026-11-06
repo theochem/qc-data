@@ -1,3 +1,6 @@
+[cache]
+namespace = "grid"
+
 [datasets.spherical]
 provider = "zenodo"
 record_id = "example_record_id"

@@ -10,6 +10,8 @@ class DatasetRegistry:
 
     # each instance will hold a separate dictionary of datasets
     datasets: dict = field(default_factory=dict)
+    # local cache for dataset information
+    cache: dict = field(default_factory=dict)
 
     @classmethod
     def from_toml(cls, toml_string: str) -> "DatasetRegistry":
@@ -25,4 +27,4 @@ class DatasetRegistry:
         DatasetRegistry
             An instance of DatasetRegistry populated with the datasets from the TOML string."""
         data = tomllib.loads(toml_string)
-        return cls(datasets=data.get("datasets", {}))
+        return cls(datasets=data.get("datasets", {}), cache=data.get("cache", {}))

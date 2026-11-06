@@ -14,3 +14,4 @@ def test_from_toml():
     }
 
     assert registry.datasets == expected
+    assert registry.cache == {"namespace": "grid"}
